@@ -49,7 +49,7 @@ const Displayprizes = () => {
 							}
 						})
 
-						console.log(mostWonUserData);
+						// console.log(mostWonUserData);
             setCategories(allcategories)
 						setYears(allYears);
 						setPrizes(data.prizes)
