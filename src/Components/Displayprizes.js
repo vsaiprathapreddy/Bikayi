@@ -8,8 +8,8 @@ const Displayprizes = () => {
     const [years,setYears] = useState([]);
     const [selectedCat, setSelectedCat] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
-		const [mostWonPeople, setMostWonpeople] = useState({});
-
+	const [mostWonPeople, setMostWonpeople] = useState({});
+	const [Loader,setLoader] = useState(true);
 
     useEffect(() => {
         fetch("http://api.nobelprize.org/v1/prize.json")
@@ -53,7 +53,8 @@ const Displayprizes = () => {
             setCategories(allcategories)
 						setYears(allYears);
 						setPrizes(data.prizes)
-						setMostWonpeople(mostWonUserData	)
+						setMostWonpeople(mostWonUserData)
+						setLoader(false)
         })
 
     }, [])
@@ -79,7 +80,14 @@ const Displayprizes = () => {
 		const mostOwnedIds = Object.keys(mostWonPeople);
 
     return (
-        <div style={{maxWidth: 500, margin: '0 auto'}}>
+		<div>
+		{
+			Loader?<button class="btn btn-primary" type="button" disabled>
+			<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+			Loading...
+		  </button>:""
+		}
+        <div style={{maxWidth: 600, margin: '0 auto'}}>
 				<div style={{height: 300, marginBottom: 20, overflow: 'scroll'}}>
 					<h5>Most Nobel prize woned people</h5>
 					<table class="table table-bordered">
@@ -100,7 +108,7 @@ const Displayprizes = () => {
                           return data.map((prize, pIndex) => {
 														return (
 															<tr>
-																<td>{index}</td>
+																<td>{index+1}</td>
 																<td>{name}</td>
 																<td>{prize.year}</td>
 																<td>{prize.category}</td>
@@ -114,8 +122,9 @@ const Displayprizes = () => {
                 
             </table>
 				</div>
-					<div style={{marginBottom: 20, marginTop: 20}}>
-            <label>Choose Category &nbsp;</label>
+				<hr/>
+					<div style={{marginBottom: 20, marginTop: 20,border: "5px solid black",padding:10,borderRadius:30}}>
+            			<label>Choose Category &nbsp;</label>
 						<select value={selectedCat} onChange={(e) => { setSelectedCat(e.target.value) }}>
 							<option value=''>Select</option>
 							{
@@ -126,6 +135,7 @@ const Displayprizes = () => {
 								})	
 							}
 						</select>
+						<label>Choose year:</label>
 						<select value={selectedYear} onChange={(e) => { setSelectedYear(e.target.value) }}>
 							<option value=''>Select</option>
 							{
@@ -142,10 +152,11 @@ const Displayprizes = () => {
 								setSelectedCat('')
 								setSelectedYear('')
 							}}
-							style={{marginLeft: 20}}
-						>Clear</button>
+							style={{marginLeft: 20,marginTop: 20,marginBottom:20}}
+						>Clear Filters</button>
 					</div>
-            
+            <div>
+				
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <th>#</th>
@@ -173,7 +184,18 @@ const Displayprizes = () => {
                                             })
                                         }
                                     </td>
-                                    <td>Actions</td>
+                                    {/* <td>Actions</td> */}
+									<td>
+									{
+                                            prize.laureates && prize.laureates .map((val,index)=>{
+                                                return(
+                                                    <div>
+                                                    <h6>{val.motivation}</h6>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+									</td>
                                 </tr>
                             )
                         })
@@ -181,7 +203,9 @@ const Displayprizes = () => {
                 </tbody>
                 
             </table>
+			</div>
         </div>
+		</div>
     )
 }
 export default Displayprizes;
