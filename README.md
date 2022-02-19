@@ -19,4 +19,4 @@ The data is displayed in two tables:
 --Later on Applying the filters for category and Year it filters and displays the results based on the filters applied.
 
 ## Deployment:
---This website is deployed on Netlify.[]
+--This website is deployed on Netlify.[https://prathap-bikayi.netlify.app/]
